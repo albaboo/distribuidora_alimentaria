@@ -7,7 +7,7 @@ from mp_app.models import Client
 # Create your views here.
 
 def page_not_found(request, exception):
-    return redirect('home')
+    return render(request, "error/404.html", status=404)
 
 #/clients/
 class LlistarClientsView(ListView):
