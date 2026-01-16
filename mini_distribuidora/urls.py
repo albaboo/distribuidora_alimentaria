@@ -16,9 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+
 from mp_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/clients/', views.LlistarClientsView.as_view(), name='Llistat de clients'),
-    path('clients/<int:id_client>/', views.DetallClientView.as_view(), name='Detall del client'),
+    path('', views.HomeView.as_view(), name='home'),
+    path('clients/', views.LlistarClientsView.as_view(), name='llistar_clients'),
+    path('clients/nou/', views.NouClientView.as_view(), name='nou_client'),
+    path('clients/<str:codi_client>/', views.DetallClientView.as_view(), name='detall_client'),
+    path('clients/<str:codi_client>/editar/', views.EditarClientView.as_view(), name='editar_client'),
 ]

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Distribuïdora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="mb-3">
+            <i class="bi bi-shop text-primary"></i> Mini Distribuïdora
+        </h1>
+        <p class="lead text-muted">Sistema de gestió d'albarans</p>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="list-group">
+                <a href="{% url 'llistar_clients' %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-people-fill text-primary fs-4 me-3"></i>
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">Gestió de Clients</h5>
+                            <p class="mb-1 text-muted">Veure, crear i editar clients</p>
+                        </div>
+                        <i class="bi bi-chevron-right text-secondary"></i>
+                    </div>
+                </a>
+                <div class="list-group-item text-muted">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-file-text fs-4 me-3"></i>
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">Gestió d'Albarans</h5>
+                            <p class="mb-1">Properament</p>
+                        </div>
+                        <span class="badge bg-warning text-dark">Pròximament</span>
+                    </div>
+                </div>
+                <div class="list-group-item text-muted">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-search fs-4 me-3"></i>
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">Consulta d'Albarans</h5>
+                            <p class="mb-1">Properament</p>
+                        </div>
+                        <span class="badge bg-warning text-dark">Pròximament</span>
+                    </div>
+                </div>
+                <a href="/admin/" class="list-group-item list-group-item-action">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-gear-fill text-secondary fs-4 me-3"></i>
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">Administració</h5>
+                            <p class="mb-1 text-muted">Panell d'administració de Django</p>
+                        </div>
+                        <i class="bi bi-chevron-right text-secondary"></i>
+                    </div>
+                </a>
+            </div>
+            <div class="text-center mt-4">
+                <p class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Projecte DAM - Accés a Dades
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

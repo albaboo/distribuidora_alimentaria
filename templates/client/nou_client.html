@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nou Client</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Nou Client</h1>
+            <a href="{% url 'llistar_clients' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Tornar al llistat
+            </a>
+        </div>
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Omple les dades del nou client</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nom_comercial" class="form-label">Nom Comercial *</label>
+                            <input type="text" class="form-control" id="nom_comercial" name="nom_comercial"
+                                   placeholder="Ex: Supermercat Paco" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cif" class="form-label">CIF/NIF *</label>
+                            <input type="text" class="form-control" id="cif" name="cif"
+                                   placeholder="Ex: A12345678" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="persona_contacte" class="form-label">Persona de Contacte *</label>
+                            <input type="text" class="form-control" id="persona_contacte" name="persona_contacte"
+                                   placeholder="Ex: Paco Gómez" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="telefon" class="form-label">Telèfon *</label>
+                            <input type="tel" class="form-control" id="telefon" name="telefon"
+                                   placeholder="Ex: 931234567" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   placeholder="exemple@empresa.cat" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="poblacio" class="form-label">Població *</label>
+                            <input type="text" class="form-control" id="poblacio" name="poblacio"
+                                   placeholder="Ex: Sabadell" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="adreca_entrega" class="form-label">Adreça d'Entrega *</label>
+                        <input type="text" class="form-control" id="adreca_entrega" name="adreca_entrega"
+                               placeholder="Ex: Carrer Major, 123" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="codi_postal" class="form-label">Codi Postal *</label>
+                            <input type="text" class="form-control" id="codi_postal" name="codi_postal"
+                                   placeholder="Ex: 08201" required>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="actiu" name="actiu" checked style="transform: scale(1.3);">
+                            <label class="form-check-label" for="actiu">
+                                <strong>Client Actiu</strong>
+                            </label>
+                        </div>
+                        <div class="form-text">
+                            Si està desactivat, el client no apareixerà al llistat principal de clients actius.
+                            Pots canviar aquest estat més tard des de l'edició del client.
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <small>
+                            <i class="bi bi-info-circle"></i>
+                            <strong>Informació important:</strong>
+                            <ul class="mb-0 mt-1">
+                                <li>Tots els camps marcats amb * són obligatoris.</li>
+                                <li>El codi del client es generarà automàticament (format: CLI001, CLI002...).</li>
+                                <li>El checkbox "Client Actiu" està marcat per defecte.</li>
+                            </ul>
+                        </small>
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'llistar_clients' %}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Cancel·lar
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle"></i> Crear Client
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (function () {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+</body>
+</html>
