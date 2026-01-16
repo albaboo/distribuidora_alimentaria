@@ -43,8 +43,7 @@ class EditarClientView(View):
 
         client.save()
 
-        redirect_url = f"/clients/{client.codi_client}/"
-        return redirect(redirect_url)
+        return redirect('detall_client', codi_client=client.codi_client)
 # /clients/nou/
 class NouClientView(View):
     def get(self, request, *args, **kwargs):
