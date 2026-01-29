@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, ListView
 
 from mp_app.models import Client
+from mp_app.models import Albara
 
 
 # Create your views here.
@@ -47,10 +48,40 @@ class EditarClientView(View):
         client.save()
 
         return redirect('detall_client', codi_client=client.codi_client)
+
 # /clients/nou/
 class NouClientView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "client/nou_client.html")
+
+    def post(self,request, *args, **kwargs):
+        client = Client.objects.create(
+            nom_comercial=request.POST.get('nom_comercial'),
+            cif=request.POST.get('cif'),
+            persona_contacte=request.POST.get('persona_contacte'),
+            telefon=request.POST.get('telefon'),
+            email=request.POST.get('email'),
+            adreca_entrega=request.POST.get('adreca_entrega'),
+            poblacio=request.POST.get('poblacio'),
+            codi_postal=request.POST.get('codi_postal'),
+            actiu=request.POST.get('actiu') == 'on'
+        )
+
+        return redirect('detall_client', codi_client=client.codi_client)
+
+#/albarans/
+class LlistarAlbaransView(ListView):
+    model = Albara
+    template_name = 'albara/list_albarans.html'
+    context_object_name = 'albarans'
+
+    def get_queryset(self):
+        return Albara.objects.all()
+
+# /albarans/nou/
+class NouAlbaraView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "client/nou_albara.html")
 
     def post(self,request, *args, **kwargs):
         client = Client.objects.create(

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llistat de Albarans</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Albarans Actius</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4 gap-4">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-house"></i>
+                Tornar a l'inici
+            </a>
+            <a href="{% url 'nou_albara' %}" class="btn btn-outline-primary">
+                <i class="bi bi-plus-circle"></i>
+                Nou Albara
+            </a>
+        </div>
+    </div>
+    <div class="card table-responsive mb-4">
+        <table class="table table-borderless table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>Codi</th>
+                <th class="d-none d-lg-table-cell">Client</th>
+                <th class="d-none d-lg-table-cell">Creació</th>
+                <th class="d-none d-lg-table-cell">Entrega prevista</th>
+                <th>Estat</th>
+                <th>Total</th>
+                <th class="text-center align-middle">Més detalls</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for albara in albarans %}
+            <tr>
+                <td>{{ albara.numero_albara }}</td>
+                <td class="d-none d-lg-table-cell">{{ albara.client.nom_comercial }}</td>
+                <td class="d-none d-lg-table-cell">{{ albara.data_creacio }}</td>
+                <td class="d-none d-lg-table-cell">{{ albara.data_entrega_prevista }}</td>
+                <td>{{ albara.estat }}</td>
+                <td>{{ albara.total }}</td>
+                <td class="text-center align-middle">
+                    <a href="{% url 'detall_albara' albara.numero_albara %}" class="btn btn-sm bg-dark-subtle">
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">
+                    <div class="alert alert-warning text-center">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        No hi ha albarans actius.
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
