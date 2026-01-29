@@ -8,126 +8,133 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Editar Client</h1>
-            <a href="{% url 'detall_client' client.codi_client %}" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left"></i> Tornar al detall
-            </a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Editar Client</h1>
+        <a href="{% url 'detall_client' client.codi_client %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Tornar al detall
+        </a>
+    </div>
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">{{ client.nom_comercial }}</h5>
         </div>
-        <div class="card">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">{{ client.nom_comercial }}</h5>
-            </div>
-            <div class="card-body">
-                <form method="post" class="needs-validation" novalidate>
-                    {% csrf_token %}
-                    <div class="alert alert-info mb-4">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-info-circle fs-4 me-3"></i>
-                            <div>
-                                <strong>Codi del client:</strong> {{ client.codi_client }}
-                                <br>
-                                <small>El codi del client s'assigna automàticament i no es pot modificar.</small>
-                            </div>
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="alert alert-info mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-info-circle fs-4 me-3"></i>
+                        <div>
+                            <strong>Codi del client:</strong> {{ client.codi_client }}
+                            <br>
+                            <small>El codi del client s'assigna automàticament i no es pot modificar.</small>
                         </div>
                     </div>
-                    <div class="alert alert-light border border-info mb-4">
-                        <small>
-                            <i class="bi bi-exclamation-circle text-info"></i>
-                            Tots els camps marcats amb * són obligatoris.
-                        </small>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="nom_comercial" class="form-label">Nom Comercial *</label>
+                        <input id="nom_comercial" type="text" class="form-control" name="nom_comercial"
+                               value="{{ client.nom_comercial }}" required>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="nom_comercial" class="form-label">Nom Comercial *</label>
-                            <input id="nom_comercial" type="text" class="form-control" name="nom_comercial" value="{{ client.nom_comercial }}" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="cif" class="form-label">CIF/NIF *</label>
-                            <input id="cif" type="text" class="form-control" name="cif" value="{{ client.cif }}" required>
-                        </div>
+                    <div class="col-md-6">
+                        <label for="cif" class="form-label">CIF/NIF *</label>
+                        <input id="cif" type="text" class="form-control" name="cif" value="{{ client.cif }}" required>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="persona" class="form-label">Persona de Contacte *</label>
-                            <input id="persona" type="text" class="form-control" name="persona_contacte" value="{{ client.persona_contacte }}" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="telefon" class="form-label">Telèfon *</label>
-                            <input id="telefon" type="tel" class="form-control" name="telefon" value="{{ client.telefon }}" required>
-                        </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="persona" class="form-label">Persona de Contacte *</label>
+                        <input id="persona" type="text" class="form-control" name="persona_contacte"
+                               value="{{ client.persona_contacte }}" required>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="email" class="form-label">Email *</label>
-                            <input id="email" type="email" class="form-control" name="email" value="{{ client.email }}" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="poblacio" class="form-label">Població *</label>
-                            <input id="poblacio" type="text" class="form-control" name="poblacio" value="{{ client.poblacio }}" required>
-                        </div>
+                    <div class="col-md-6">
+                        <label for="telefon" class="form-label">Telèfon *</label>
+                        <input id="telefon" type="tel" class="form-control" name="telefon" value="{{ client.telefon }}"
+                               required>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="adreca" class="form-label">Adreça d'Entrega *</label>
-                        <input id="adreca" type="text" class="form-control" name="adreca_entrega" value="{{ client.adreca_entrega }}" required>
-                        </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email *</label>
+                        <input id="email" type="email" class="form-control" name="email" value="{{ client.email }}"
+                               required>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="cp" class="form-label">Codi Postal *</label>
-                            <input id="cp" type="text" class="form-control" name="codi_postal" value="{{ client.codi_postal }}" required>
+                    <div class="col-md-6">
+                        <label for="poblacio" class="form-label">Població *</label>
+                        <input id="poblacio" type="text" class="form-control" name="poblacio"
+                               value="{{ client.poblacio }}" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="adreca" class="form-label">Adreça d'Entrega *</label>
+                        <input id="adreca" type="text" class="form-control" name="adreca_entrega"
+                               value="{{ client.adreca_entrega }}" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="cp" class="form-label">Codi Postal *</label>
+                        <input id="cp" type="text" class="form-control" name="codi_postal"
+                               value="{{ client.codi_postal }}" required>
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-center ps-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="actiu" name="actiu"
+                                   {% if client.actiu %} checked {% endif %} style="transform: scale(1.3);">
+                            <label class="form-check-label ps-2" for="actiu">
+                                <strong>Client Actiu</strong>
+                            </label>
                         </div>
-                        <div class="col-md-6 d-flex flex-column justify-content-center">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="actiu" name="actiu"
-                                       {% if client.actiu %} checked {% endif %} style="transform: scale(1.3);">
-                                <label class="form-check-label ps-2" for="actiu">
-                                    <strong>Client Actiu</strong>
-                                </label>
-                            </div>
-                            <div class="form-text">
-                                Si està desactivat, el client no apareixerà al llistat principal de clients actius.
-                                {% if not client.actiu %}
-                                    <br>
-                                    <span class="text-warning">
+                        <div class="form-text">
+                            Si està desactivat, el client no apareixerà al llistat principal de clients actius.
+                            {% if not client.actiu %}
+                            <br>
+                            <span class="text-warning">
                                         <i class="bi bi-exclamation-triangle"></i> Actualment aquest client està INACTIU.
                                     </span>
-                                {% endif %}
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="{% url 'detall_client' client.codi_client %}" class="btn btn-secondary">
-                            <i class="bi bi-x-circle"></i> Cancel·lar
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-circle"></i> Guardar Canvis
-                        </button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="alert alert-light border border-info my-4">
+                    <small class="fw-bolder h6">
+                        <i class="bi bi-exclamation-circle text-info"></i>
+                        Tots els camps marcats amb * són obligatoris.
+                    </small>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'detall_client' client.codi_client %}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i> Cancel·lar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Guardar Canvis
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        (function () {
-            'use strict'
-            const forms = document.querySelectorAll('.needs-validation');
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
 </body>
 </html>
