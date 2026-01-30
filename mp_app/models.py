@@ -49,7 +49,7 @@ class Albara(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             super().save(*args, **kwargs)
-            self.numero_albara = f"ALB{self.id:03d}"
+            self.numero_albara = f"#COM-{self.data_creacio.year}-{self.id:03d}"
             kwargs['force_insert'] = False
             super().save(*args, **kwargs)
         else:

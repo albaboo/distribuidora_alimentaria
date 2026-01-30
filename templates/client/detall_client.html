@@ -8,168 +8,160 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Detall del Client</h1>
-            <a href="{% url 'llistar_clients' %}" class="btn btn-outline-secondary">
-                ← Tornar al llistat
-            </a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Detall del Client</h1>
+        <a href="{% url 'llistar_clients' %}" class="btn btn-outline-secondary">
+            ← Tornar al llistat
+        </a>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            <h2 class="mb-0">{{ client.nom_comercial }}</h2>
         </div>
-        <div class="card mb-4">
-            <div class="card-header bg-dark text-white">
-                <h2 class="mb-0">{{ client.nom_comercial }}</h2>
-                <small class="text-light">Codi: {{ client.codi_client }}</small>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5 class="card-title border-bottom pb-2">Informació bàsica</h5>
-                        <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row" class="w-25">Codi:</th>
-                                        <td><strong>{{ client.codi_client }}</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">CIF:</th>
-                                        <td>{{ client.cif }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Contacte:</th>
-                                        <td>{{ client.persona_contacte }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Telèfon:</th>
-                                        <td>{{ client.telefon }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Email:</th>
-                                        <td>{{ client.email }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="card-title border-bottom pb-2">Informació bàsica</h5>
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="w-25">Codi:</th>
+                                <td><b>{{ client.codi_client }}</b></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">CIF:</th>
+                                <td>{{ client.cif }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Contacte:</th>
+                                <td>{{ client.persona_contacte }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Telèfon:</th>
+                                <td>{{ client.telefon }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email:</th>
+                                <td>{{ client.email }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Estat:</th>
+                                <td>
+                                    {% if client.actiu %}
+                                    <span class="badge bg-success">Actiu</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">Inactiu</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-md-6">
-                        <h5 class="card-title border-bottom pb-2">Informació d'entrega</h5>
-                        <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row" class="w-25">Adreça:</th>
-                                        <td>{{ client.adreca_entrega }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Població:</th>
-                                        <td>{{ client.poblacio }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Codi Postal:</th>
-                                        <td>{{ client.codi_postal }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Estat:</th>
-                                        <td>
-                                            {% if client.actiu %}
-                                                <span class="badge bg-success">Actiu</span>
-                                            {% else %}
-                                                <span class="badge bg-danger">Inactiu</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="card-title border-bottom pb-2">Informació d'entrega</h5>
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="w-25">Adreça:</th>
+                                <td>{{ client.adreca_entrega }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Població:</th>
+                                <td>{{ client.poblacio }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Codi Postal:</th>
+                                <td>{{ client.codi_postal }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
-            <a href="{% url 'editar_client' client.codi_client %}" class="btn bg-secondary-subtle me-2">
-                    <i class="bi bi-pencil-square"></i> Editar client
-            </a>
-            <a href="#" class="btn bg-primary-subtle">
-                <i class="bi bi-file-earmark-plus"></i> Nou albarà
-                <span class="badge bg-gradient bg-warning text-dark ms-1">Pròximament</span>
-            </a>
+    </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
+        <a href="{% url 'editar_client' client.codi_client %}" class="btn btn-secondary me-2">
+            <i class="bi bi-pencil-square"></i> Editar client
+        </a>
+        <a href="{% url 'nou_albara_client' client.codi_client %}" class="btn btn-primary">
+            <i class="bi bi-file-earmark-plus"></i> Nou albarà
+        </a>
+    </div>
+    <div class="card">
+        <div class="card-header bg-light">
+            <h3 class="mb-0">Albarans del client</h3>
         </div>
-        <div class="card">
-            <div class="card-header bg-light">
-                <h3 class="mb-0">Albarans del client</h3>
+        <div class="card-body">
+            {% if albarans %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Número</th>
+                        <th>Data creació</th>
+                        <th>Data entrega prevista</th>
+                        <th>Estat</th>
+                        <th>Total</th>
+                        <th>Accions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for albara in albarans %}
+                    <tr>
+                        <td>{{ albara.numero_albara|default:"Sense número" }}</td>
+                        <td>{{ albara.data_creacio|date:"d/m/Y H:i" }}</td>
+                        <td>{{ albara.data_entrega_prevista|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if albara.estat == 'PENDENT' %}
+                            <span class="badge bg-warning text-dark">{{ albara.get_estat_display }}</span>
+                            {% elif albara.estat == 'EN_PREPARACIO' %}
+                            <span class="badge bg-info">{{ albara.get_estat_display }}</span>
+                            {% elif albara.estat == 'ENVIAT' %}
+                            <span class="badge bg-primary">{{ albara.get_estat_display }}</span>
+                            {% elif albara.estat == 'ENTREGAT' %}
+                            <span class="badge bg-success">{{ albara.get_estat_display }}</span>
+                            {% elif albara.estat == 'CANCELAT' %}
+                            <span class="badge bg-danger">{{ albara.get_estat_display }}</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ albara.get_estat_display }}</span>
+                            {% endif %}
+                        </td>
+                        <td><b>{{ albara.total|default:"0.00" }} €</b></td>
+                        <td>
+                            <a href="{% url 'detall_albara' albara.numero_albara %}" class="btn btn-sm btn-outline-primary">Veure</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <div class="card-body">
-                {% if albarans %}
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Número</th>
-                                    <th>Data creació</th>
-                                    <th>Data entrega</th>
-                                    <th>Estat</th>
-                                    <th>Total</th>
-                                    <th>Accions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for albara in albarans %}
-                                <tr>
-                                    <td>{{ albara.numero_albara|default:"Sense número" }}</td>
-                                    <td>{{ albara.data_creacio|date:"d/m/Y" }}</td>
-                                    <td>{{ albara.data_entrega_prevista|date:"d/m/Y" }}</td>
-                                    <td>
-                                        {% if albara.estat == 'PENDENT' %}
-                                            <span class="badge bg-warning text-dark">Pendent</span>
-                                        {% elif albara.estat == 'EN_PREPARACIO' %}
-                                            <span class="badge bg-info">En Preparació</span>
-                                        {% elif albara.estat == 'ENVIAT' %}
-                                            <span class="badge bg-primary">Enviat</span>
-                                        {% elif albara.estat == 'ENTREGAT' %}
-                                            <span class="badge bg-success">Entregat</span>
-                                        {% elif albara.estat == 'CANCELAT' %}
-                                            <span class="badge bg-danger">Cancel·lat</span>
-                                        {% else %}
-                                            <span class="badge bg-secondary">{{ albara.estat }}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td><strong>{{ albara.total|default:"0.00" }} €</strong></td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-outline-primary">Veure</a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+            <div class="alert alert-info mt-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <b>Total albarans:</b> {{ albarans|length }}
                     </div>
-                    <div class="alert alert-info mt-3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <strong>Total albarans:</strong> {{ albarans|length }}
-                            </div>
-                            <div class="col-md-6 text-end">
-                                {% comment %}
-                                Si quieres mostrar el total general, añade esto en tu vista:
-                                total_general = sum(albara.total for albara in albarans)
-                                {% endcomment %}
-                                <strong>Total general:</strong>
-                                {% with total_general=albarans|length %}
-                                    {{ total_general }} albarans
-                                {% endwith %}
-                            </div>
-                        </div>
+                    <div class="col-md-6 text-end">
+                        <b>Total general:</b>
+                        {{ total_general }} €
                     </div>
-                {% else %}
-                    <div class="alert alert-warning text-center">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        Aquest client encara no té cap albarà.
-                    </div>
-                {% endif %}
+                </div>
             </div>
+            {% else %}
+            <div class="alert alert-warning text-center">
+                <i class="bi bi-exclamation-triangle"></i>
+                Aquest client encara no té cap albarà.
+            </div>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

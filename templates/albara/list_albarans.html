@@ -28,7 +28,6 @@
             <tr>
                 <th>Codi</th>
                 <th class="d-none d-lg-table-cell">Client</th>
-                <th class="d-none d-lg-table-cell">Creació</th>
                 <th class="d-none d-lg-table-cell">Entrega prevista</th>
                 <th>Estat</th>
                 <th>Total</th>
@@ -40,10 +39,23 @@
             <tr>
                 <td>{{ albara.numero_albara }}</td>
                 <td class="d-none d-lg-table-cell">{{ albara.client.nom_comercial }}</td>
-                <td class="d-none d-lg-table-cell">{{ albara.data_creacio }}</td>
-                <td class="d-none d-lg-table-cell">{{ albara.data_entrega_prevista }}</td>
-                <td>{{ albara.estat }}</td>
-                <td>{{ albara.total }}</td>
+                <td class="d-none d-lg-table-cell">{{ albara.data_entrega_prevista|date:"d/m/Y" }}</td>
+                <td>
+                    {% if albara.estat == 'PENDENT' %}
+                    <span class="badge bg-warning text-dark">{{ albara.get_estat_display }}</span>
+                    {% elif albara.estat == 'EN_PREPARACIO' %}
+                    <span class="badge bg-info">{{ albara.get_estat_display }}</span>
+                    {% elif albara.estat == 'ENVIAT' %}
+                    <span class="badge bg-primary">{{ albara.get_estat_display }}</span>
+                    {% elif albara.estat == 'ENTREGAT' %}
+                    <span class="badge bg-success">{{ albara.get_estat_display }}</span>
+                    {% elif albara.estat == 'CANCELAT' %}
+                    <span class="badge bg-danger">{{ albara.get_estat_display }}</span>
+                    {% else %}
+                    <span class="badge bg-secondary">{{ albara.get_estat_display }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ albara.total }} €</td>
                 <td class="text-center align-middle">
                     <a href="{% url 'detall_albara' albara.numero_albara %}" class="btn btn-sm bg-dark-subtle">
                         <i class="bi bi-arrow-right"></i>

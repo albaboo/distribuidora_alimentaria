@@ -10,7 +10,8 @@ from mp_app.models import Albara
 def page_not_found(request, exception):
     return render(request, "error/404.html", status=404)
 
-#/clients/
+
+# /clients/
 class LlistarClientsView(ListView):
     model = Client
     template_name = 'client/list_clients.html'
@@ -19,20 +20,23 @@ class LlistarClientsView(ListView):
     def get_queryset(self):
         return Client.objects.filter(actiu=True)
 
-#/clients/<codi_client>/
+
+# /clients/<codi_client>/
 class DetallClientView(View):
     def get(self, request, *args, **kwargs):
         client = Client.objects.get(codi_client=self.kwargs['codi_client'])
         albarans = client.albarans.all()
-        return render(request, "client/detall_client.html", {'client': client, 'albarans': albarans})
+        total_general = sum(albara.total for albara in albarans)
+        return render(request, "client/detall_client.html", {'client': client, 'albarans': albarans, 'total_general': total_general})
 
-#/clients/<codi_client>/editar/
+
+# /clients/<codi_client>/editar/
 class EditarClientView(View):
-    def get(self,request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         client = Client.objects.get(codi_client=self.kwargs['codi_client'])
         return render(request, "client/editar_client.html", {"client": client})
 
-    def post(self,request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         client = Client.objects.get(codi_client=self.kwargs['codi_client'])
 
         client.nom_comercial = request.POST.get('nom_comercial')
@@ -49,12 +53,13 @@ class EditarClientView(View):
 
         return redirect('detall_client', codi_client=client.codi_client)
 
+
 # /clients/nou/
 class NouClientView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "client/nou_client.html")
 
-    def post(self,request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         client = Client.objects.create(
             nom_comercial=request.POST.get('nom_comercial'),
             cif=request.POST.get('cif'),
@@ -69,7 +74,8 @@ class NouClientView(View):
 
         return redirect('detall_client', codi_client=client.codi_client)
 
-#/albarans/
+
+# /albarans/
 class LlistarAlbaransView(ListView):
     model = Albara
     template_name = 'albara/list_albarans.html'
@@ -78,19 +84,21 @@ class LlistarAlbaransView(ListView):
     def get_queryset(self):
         return Albara.objects.all()
 
-#/albarans/<numero_albara>/
+
+# /albarans/<numero_albara>/
 class DetallAlbaraView(View):
     def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
         return render(request, "albara/detall_albara.html", {'albara': albara})
 
-#/albarans/<numero_albara>/editar/
+
+# /albarans/<numero_albara>/editar/
 class EditarAlbaraView(View):
-    def get(self,request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
         return render(request, "albara/editar_albara.html", {"albara": albara})
 
-    def post(self,request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
 
         albara.client = request.POST.get('client')
@@ -104,22 +112,46 @@ class EditarAlbaraView(View):
 
         return redirect('detall_albara', numero_albara=albara.numero_albara)
 
+
 # /albarans/nou/
 class NouAlbaraView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "albara/nou_albara.html")
+        clients = Client.objects.filter(actiu=True)
+        if clients.count() == 0:
+            return render(request, 'home.html')
+        estats = Albara.ESTAT_CHOICES
+        return render(request, "albara/nou_albara.html", {'clients': clients, 'estats': estats})
 
-    def post(self,request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        client = Client.objects.get(codi_client=request.POST.get('client'))
         albara = Albara.objects.create(
-            client=request.POST.get('client'),
-            data_creacio=request.POST.get('data_creacio'),
+            client=client,
             data_entrega_prevista=request.POST.get('data_entrega_prevista'),
-            estat=request.POST.get('estat'),
-            total=request.POST.get('total'),
+            total=0,
             observacions=request.POST.get('observacions')
         )
 
         return redirect('detall_albara', numero_albara=albara.numero_albara)
+
+
+# /albarans/nou/<codi_client>/
+class NouAlbaraClientView(View):
+    def get(self, request, *args, **kwargs):
+        clients = [Client.objects.get(codi_client=self.kwargs['codi_client'])]
+        estats = Albara.ESTAT_CHOICES
+        return render(request, "albara/nou_albara.html", {'clients': clients, 'estats': estats})
+
+    def post(self, request, *args, **kwargs):
+        client = Client.objects.get(codi_client=request.POST.get('client'))
+        albara = Albara.objects.create(
+            client=client,
+            data_entrega_prevista=request.POST.get('data_entrega_prevista'),
+            total=0,
+            observacions=request.POST.get('observacions')
+        )
+
+        return redirect('detall_albara', numero_albara=albara.numero_albara)
+
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):

@@ -29,7 +29,7 @@
                                 <tbody>
                                     <tr>
                                         <th scope="row" class="w-25">Codi:</th>
-                                        <td><strong>{{ client.codi_client }}</strong></td>
+                                        <td><b>{{ client.codi_client }}</b></td>
                                     </tr>
                                     <tr>
                                         <th scope="row">CIF:</th>
@@ -133,7 +133,7 @@
                                             <span class="badge bg-secondary">{{ albara.estat }}</span>
                                         {% endif %}
                                     </td>
-                                    <td><strong>{{ albara.total|default:"0.00" }} €</strong></td>
+                                    <td><b>{{ albara.total|default:"0.00" }} €</b></td>
                                     <td>
                                         <a href="#" class="btn btn-sm btn-outline-primary">Veure</a>
                                     </td>
@@ -145,14 +145,14 @@
                     <div class="alert alert-info mt-3">
                         <div class="row">
                             <div class="col-md-6">
-                                <strong>Total albarans:</strong> {{ albarans|length }}
+                                <b>Total albarans:</b> {{ albarans|length }}
                             </div>
                             <div class="col-md-6 text-end">
                                 {% comment %}
                                 Si quieres mostrar el total general, añade esto en tu vista:
                                 total_general = sum(albara.total for albara in albarans)
                                 {% endcomment %}
-                                <strong>Total general:</strong>
+                                <b>Total general:</b>
                                 {% with total_general=albarans|length %}
                                     {{ total_general }} albarans
                                 {% endwith %}
