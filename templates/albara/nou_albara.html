@@ -29,17 +29,16 @@
                         <select id="client" name="client" class="form-select" required>
                             <option value="" selected disabled>Selecciona un client</option>
                             {% for client in clients %}
-                            {% if clients|length == 1 %}
-                            <option value="{{ client.codi_client }}" selected>
+                            <option value="{{ client.codi_client }}" {% if clients|length == 1 %} selected {% endif %}>
                                 {{ client.nom_comercial }}
                             </option>
-                            {% else %}
-                            <option value="{{ client.codi_client }}">
-                                {{ client.nom_comercial }}
-                            </option>
-                            {% endif %}
                             {% endfor %}
                         </select>
+                        {% else %}
+                        <div class="alert alert-danger m-0 py-1 d-flex align-items-center">
+                            <i class="bi bi-info-circle fs-4 me-3 "></i>
+                            <p class="m-0"><b>Sense clients actius</b></p>
+                        </div>
                         {% endif %}
                     </div>
                     <div class="col-md-6">

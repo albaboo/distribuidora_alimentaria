@@ -31,26 +31,20 @@
                 <th class="d-none d-lg-table-cell">CIF</th>
                 <th class="d-none d-lg-table-cell">Població</th>
                 <th>Telèfon</th>
-                <th class="text-center align-middle">Més detalls</th>
             </tr>
             </thead>
             <tbody>
             {% for client in clients %}
-            <tr>
+            <tr style='cursor: pointer;' onclick="window.location.href='{% url 'detall_client' client.codi_client %}';">
                 <td>{{ client.codi_client }}</td>
                 <td class="d-none d-lg-table-cell">{{ client.nom_comercial }}</td>
                 <td class="d-none d-lg-table-cell">{{ client.cif }}</td>
                 <td class="d-none d-lg-table-cell">{{ client.poblacio }}</td>
                 <td>{{ client.telefon }}</td>
-                <td class="text-center align-middle">
-                    <a href="{% url 'detall_client' client.codi_client %}" class="btn btn-sm bg-dark-subtle">
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" class="text-center text-muted">
+                <td colspan="5" class="text-center text-muted">
                     <div class="alert alert-warning text-center">
                         <i class="bi bi-exclamation-triangle"></i>
                         No hi ha clients actius.

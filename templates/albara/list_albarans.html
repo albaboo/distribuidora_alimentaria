@@ -31,12 +31,11 @@
                 <th class="d-none d-lg-table-cell">Entrega prevista</th>
                 <th>Estat</th>
                 <th>Total</th>
-                <th class="text-center align-middle">Més detalls</th>
             </tr>
             </thead>
             <tbody>
             {% for albara in albarans %}
-            <tr>
+            <tr style='cursor: pointer;' onclick="window.location.href='{% url 'detall_albara' albara.numero_albara %}';">
                 <td>{{ albara.numero_albara }}</td>
                 <td class="d-none d-lg-table-cell">{{ albara.client.nom_comercial }}</td>
                 <td class="d-none d-lg-table-cell">{{ albara.data_entrega_prevista|date:"d/m/Y" }}</td>
@@ -56,15 +55,10 @@
                     {% endif %}
                 </td>
                 <td>{{ albara.total }} €</td>
-                <td class="text-center align-middle">
-                    <a href="{% url 'detall_albara' albara.numero_albara %}" class="btn btn-sm bg-dark-subtle">
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" class="text-center text-muted">
+                <td colspan="5" class="text-center text-muted">
                     <div class="alert alert-warning text-center">
                         <i class="bi bi-exclamation-triangle"></i>
                         No hi ha albarans actius.

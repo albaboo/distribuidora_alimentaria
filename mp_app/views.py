@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView
 
@@ -27,7 +28,8 @@ class DetallClientView(View):
         client = Client.objects.get(codi_client=self.kwargs['codi_client'])
         albarans = client.albarans.all()
         total_general = sum(albara.total for albara in albarans)
-        return render(request, "client/detall_client.html", {'client': client, 'albarans': albarans, 'total_general': total_general})
+        return render(request, "client/detall_client.html",
+                      {'client': client, 'albarans': albarans, 'total_general': total_general})
 
 
 # /clients/<codi_client>/editar/
@@ -96,16 +98,18 @@ class DetallAlbaraView(View):
 class EditarAlbaraView(View):
     def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
-        return render(request, "albara/editar_albara.html", {"albara": albara})
+        clients = Client.objects.filter(
+            Q(actiu=True) | Q(codi_client=albara.client.codi_client)
+        )
+        estats = Albara.ESTAT_CHOICES
+        return render(request, "albara/editar_albara.html", {"albara": albara, "estats": estats, "clients": clients})
 
     def post(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
-
-        albara.client = request.POST.get('client')
-        albara.data_creacio = request.POST.get('data_creacio')
+        client = Client.objects.get(codi_client=request.POST.get('client'))
+        albara.client = client
         albara.data_entrega_prevista = request.POST.get('data_entrega_prevista')
         albara.estat = request.POST.get('estat')
-        albara.total = request.POST.get('total')
         albara.observacions = request.POST.get('observacions')
 
         albara.save()
@@ -120,7 +124,7 @@ class NouAlbaraView(View):
         if clients.count() == 0:
             return render(request, 'home.html')
         estats = Albara.ESTAT_CHOICES
-        return render(request, "albara/nou_albara.html", {'clients': clients, 'estats': estats})
+        return render(request, "albara/nou_albara.html", {'clients': clients})
 
     def post(self, request, *args, **kwargs):
         client = Client.objects.get(codi_client=request.POST.get('client'))
@@ -138,8 +142,7 @@ class NouAlbaraView(View):
 class NouAlbaraClientView(View):
     def get(self, request, *args, **kwargs):
         clients = [Client.objects.get(codi_client=self.kwargs['codi_client'])]
-        estats = Albara.ESTAT_CHOICES
-        return render(request, "albara/nou_albara.html", {'clients': clients, 'estats': estats})
+        return render(request, "albara/nou_albara.html", {'clients': clients})
 
     def post(self, request, *args, **kwargs):
         client = Client.objects.get(codi_client=request.POST.get('client'))
