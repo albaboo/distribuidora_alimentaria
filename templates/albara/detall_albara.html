@@ -66,44 +66,24 @@
             <h3 class="mb-0">Llinees d'albarans</h3>
         </div>
         <div class="card-body">
-            {% if albarans %}
+            {% if llinees %}
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-borderless table-striped table-hover">
                     <thead class="table-dark">
                     <tr>
-                        <th>Número</th>
-                        <th>Data creació</th>
-                        <th>Data entrega</th>
-                        <th>Estat</th>
-                        <th>Total</th>
-                        <th>Accions</th>
+                        <th>Producte</th>
+                        <th>Quantitat</th>
+                        <th class="d-none d-lg-table-cell">Preu unitari</th>
+                        <th>Subtotal</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for albara in albarans %}
-                    <tr>
-                        <td>{{ albara.numero_albara|default:"Sense número" }}</td>
-                        <td>{{ albara.data_creacio|date:"d/m/Y" }}</td>
-                        <td>{{ albara.data_entrega_prevista|date:"d/m/Y" }}</td>
-                        <td>
-                            {% if albara.estat == 'PENDENT' %}
-                            <span class="badge bg-warning text-dark">Pendent</span>
-                            {% elif albara.estat == 'EN_PREPARACIO' %}
-                            <span class="badge bg-info">En Preparació</span>
-                            {% elif albara.estat == 'ENVIAT' %}
-                            <span class="badge bg-primary">Enviat</span>
-                            {% elif albara.estat == 'ENTREGAT' %}
-                            <span class="badge bg-success">Entregat</span>
-                            {% elif albara.estat == 'CANCELAT' %}
-                            <span class="badge bg-danger">Cancel·lat</span>
-                            {% else %}
-                            <span class="badge bg-secondary">{{ albara.estat }}</span>
-                            {% endif %}
-                        </td>
-                        <td><b>{{ albara.total|default:"0.00" }} €</b></td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Veure</a>
-                        </td>
+                    {% for llinea in llinees %}
+                    <tr style='cursor: pointer;' onclick="window.location.href='{% url 'detall_llinea' llinea.id %}';">
+                        <td>{{ llinea.nom_producte }}</td>
+                        <td>{{ llinea.quantitat }}</td>
+                        <td class="d-none d-lg-table-cell">{{ llinea.preu_unitari }}</td>
+                        <td>{{ llinea.subtotal }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -112,11 +92,11 @@
             <div class="alert alert-info mt-3">
                 <div class="row">
                     <div class="col-md-6">
-                        <b>Total albarans:</b> {{ albarans|length }}
+                        <b>Total llinees:</b> {{ llinees|length }}
                     </div>
                     <div class="col-md-6 text-end">
-                        <b>Total general:</b>
-                        {{ total_general }} €
+                        <b>Total:</b>
+                        {{ albara.total }} €
                     </div>
                 </div>
             </div>

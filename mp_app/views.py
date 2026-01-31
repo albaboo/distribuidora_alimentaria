@@ -92,7 +92,8 @@ class LlistarAlbaransView(ListView):
 class DetallAlbaraView(View):
     def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
-        return render(request, "albara/detall_albara.html", {'albara': albara})
+        llinees = albara.llinees.all()
+        return render(request, "albara/detall_albara.html", {'albara': albara, 'llinees': llinees})
 
 
 # /albarans/<numero_albara>/editar/
