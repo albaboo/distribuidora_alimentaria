@@ -37,4 +37,4 @@
  13. Executar servidor: python manage.py runserver
 
 
- 14. Provar l'aplicació al navegador
+ 14. Provar l'aplicacio al navegador

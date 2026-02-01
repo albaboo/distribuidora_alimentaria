@@ -22,7 +22,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="card-title border-bottom pb-2">Informació bàsica</h5>
+                    <h5 class="card-title border-bottom pb-2">Informacio basica</h5>
                     <div class="table-responsive">
                         <table class="table table-borderless">
                             <tbody>
@@ -39,7 +39,7 @@
                                 <td>{{ client.persona_contacte }}</td>
                             </tr>
                             <tr>
-                                <th scope="row">Telèfon:</th>
+                                <th scope="row">Telefon:</th>
                                 <td>{{ client.telefon }}</td>
                             </tr>
                             <tr>
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h5 class="card-title border-bottom pb-2">Informació d'entrega</h5>
+                    <h5 class="card-title border-bottom pb-2">Informacio d'entrega</h5>
                     <div class="table-responsive">
                         <table class="table table-borderless">
                             <tbody>
@@ -70,7 +70,7 @@
                                 <td>{{ client.adreca_entrega }}</td>
                             </tr>
                             <tr>
-                                <th scope="row">Població:</th>
+                                <th scope="row">Poblacio:</th>
                                 <td>{{ client.poblacio }}</td>
                             </tr>
                             <tr>
@@ -89,7 +89,7 @@
             <i class="bi fs-4 bi-pencil-square"></i> Editar client
         </a>
         <a href="{% url 'nou_albara_client' client.codi_client %}" class="btn btn-primary py-1 d-inline-flex gap-2 align-items-center">
-            <i class="bi fs-4 bi-file-earmark-plus"></i> Nou albarà
+            <i class="bi fs-4 bi-file-earmark-plus"></i> Nou albara
         </a>
     </div>
     <div class="card">
@@ -102,8 +102,8 @@
                 <table class="table table-borderless table-striped table-hover">
                     <thead class="table-dark">
                     <tr>
-                        <th>Número</th>
-                        <th>Data creació</th>
+                        <th>Numero</th>
+                        <th>Data creacio</th>
                         <th>Data entrega prevista</th>
                         <th>Estat</th>
                         <th>Total</th>
@@ -112,7 +112,7 @@
                     <tbody>
                     {% for albara in albarans %}
                     <tr style='cursor: pointer;' onclick="window.location.href='{% url 'detall_albara' albara.numero_albara %}';">
-                        <td>{{ albara.numero_albara|default:"Sense número" }}</td>
+                        <td>{{ albara.numero_albara|default:"Sense numero" }}</td>
                         <td>{{ albara.data_creacio|date:"d/m/Y H:i" }}</td>
                         <td>{{ albara.data_entrega_prevista|date:"d/m/Y" }}</td>
                         <td>
@@ -150,7 +150,7 @@
             {% else %}
             <div class="alert alert-warning text-center">
                 <i class="bi bi-exclamation-triangle"></i>
-                Aquest client encara no té cap albarà.
+                Aquest client encara no te cap albara.
             </div>
             {% endif %}
         </div>

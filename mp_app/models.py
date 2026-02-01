@@ -33,7 +33,7 @@ class Albara(models.Model):
 
     ESTAT_CHOICES = [
         (PENDENT, 'Pendent'),
-        (EN_PREPARACIO, 'En Preparació'),
+        (EN_PREPARACIO, 'En Preparacio'),
         (ENVIAT, 'Enviat'),
         (ENTREGAT, 'Entregat'),
         (CANCELAT, 'Cancel·lat'),

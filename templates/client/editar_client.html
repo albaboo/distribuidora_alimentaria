@@ -28,7 +28,7 @@
                         <div>
                             <b>Codi del client:</b> {{ client.codi_client }}
                             <br>
-                            <small>El codi del client s'assigna automàticament i no es pot modificar.</small>
+                            <small>El codi del client s'assigna automaticament i no es pot modificar.</small>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                                value="{{ client.persona_contacte }}" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="telefon" class="form-label">Telèfon *</label>
+                        <label for="telefon" class="form-label">Telefon *</label>
                         <input id="telefon" type="tel" class="form-control" name="telefon" value="{{ client.telefon }}"
                                required>
                     </div>
@@ -62,7 +62,7 @@
                                required>
                     </div>
                     <div class="col-md-6">
-                        <label for="poblacio" class="form-label">Població *</label>
+                        <label for="poblacio" class="form-label">Poblacio *</label>
                         <input id="poblacio" type="text" class="form-control" name="poblacio"
                                value="{{ client.poblacio }}" required>
                     </div>
@@ -89,11 +89,11 @@
                             </label>
                         </div>
                         <div class="form-text">
-                            Si està desactivat, el client no apareixerà al llistat principal de clients actius.
+                            Si esta desactivat, el client no apareixera al llistat principal de clients actius.
                             {% if not client.actiu %}
                             <br>
                             <span class="text-warning">
-                                        <i class="bi bi-exclamation-triangle"></i> Actualment aquest client està INACTIU.
+                                        <i class="bi bi-exclamation-triangle"></i> Actualment aquest client esta INACTIU.
                                     </span>
                             {% endif %}
                         </div>
@@ -102,7 +102,7 @@
                 <div class="alert alert-light border border-info m-0">
                     <small class="fw-bolder h6">
                         <i class="bi bi-exclamation-circle text-info fs-4 me-3"></i>
-                        Tots els camps marcats amb * són obligatoris.
+                        Tots els camps marcats amb * son obligatoris.
                     </small>
                 </div>
                 <div class="d-flex justify-content-between mt-4">
