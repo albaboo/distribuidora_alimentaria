@@ -174,8 +174,8 @@ class EditarLiniaView(View):
     def post(self, request, *args, **kwargs):
         linia = LiniaAlbara.objects.get(id=self.kwargs['id'])
         linia.nom_producte = request.POST.get('nom_producte')
-        linia.quantitat = request.POST.get('quantitat')
-        linia.preu_unitari = request.POST.get('preu_unitari')
+        linia.quantitat = int(request.POST.get('quantitat'))
+        linia.preu_unitari = Decimal(request.POST.get('preu_unitari'))
         linia.notes = request.POST.get('notes')
 
         linia.save()
