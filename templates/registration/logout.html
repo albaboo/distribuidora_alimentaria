@@ -1,0 +1,14 @@
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="list-group-item list-group-item-action p-4 d-flex justify-content-end">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-box-arrow-right text-danger fs-4 me-3"></i>
+            <div class="flex-grow-1 text-end">
+                <h5 class="mb-1">Tancar sessió</h5>
+                <p class="mb-1 text-muted">Sortir del sistema</p>
+            </div>
+        </div>
+    </button>
+</form>
+{% endif %}

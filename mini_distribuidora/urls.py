@@ -15,9 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from mp_app import views
+from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomeView.as_view(), name='home'),
@@ -35,6 +37,9 @@ urlpatterns = [
     path('linies/<str:id>/editar/', views.EditarLiniaView.as_view(), name='editar_linia'),
     path('consulta/albara/<str:numero_albara>/', views.ConsultaAlbaraView.as_view(), name='consulta_albara'),
     path('consulta/albara/', views.ConsultaFormulariAlbaraView.as_view(), name='cercar_albara'),
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path("accounts/", include("django.contrib.auth.urls")),
+
 ]
 
 handler404 = 'mp_app.views.page_not_found'

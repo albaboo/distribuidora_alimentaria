@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView
@@ -60,7 +61,7 @@ class EditarClientView(View):
 
 
 # /clients/nou/
-class NouClientView(View):
+class NouClientView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, "client/nou_client.html")
 
@@ -81,7 +82,7 @@ class NouClientView(View):
 
 
 # /albarans/
-class LlistarAlbaransView(ListView):
+class LlistarAlbaransView(LoginRequiredMixin, ListView):
     model = Albara
     template_name = 'albara/list_albarans.html'
     context_object_name = 'albarans'
@@ -91,7 +92,7 @@ class LlistarAlbaransView(ListView):
 
 
 # /albarans/<numero_albara>/
-class DetallAlbaraView(View):
+class DetallAlbaraView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
         linies = albara.linies.all()
@@ -99,7 +100,7 @@ class DetallAlbaraView(View):
 
 
 # /albarans/<numero_albara>/editar/
-class EditarAlbaraView(View):
+class EditarAlbaraView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
         clients = Client.objects.filter(
@@ -122,7 +123,7 @@ class EditarAlbaraView(View):
 
 
 # /albarans/nova/
-class NouAlbaraView(View):
+class NouAlbaraView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         clients = Client.objects.filter(actiu=True)
         if clients.count() == 0:
@@ -143,7 +144,7 @@ class NouAlbaraView(View):
 
 
 # /albarans/nova/<codi_client>/
-class NouAlbaraClientView(View):
+class NouAlbaraClientView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         clients = [Client.objects.get(codi_client=self.kwargs['codi_client'])]
         return render(request, "albara/nou_albara.html", {'clients': clients})
@@ -161,14 +162,14 @@ class NouAlbaraClientView(View):
 
 
 # /linies/<id>/
-class DetallLiniaView(View):
+class DetallLiniaView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         linia = LiniaAlbara.objects.get(id=self.kwargs['id'])
         return render(request, "linia/detall_linia.html", {'linia': linia})
 
 
 # /linies/<id>/editar/
-class EditarLiniaView(View):
+class EditarLiniaView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         linia = LiniaAlbara.objects.get(id=self.kwargs['id'])
         return render(request, "linia/editar_linia.html", {'linia': linia})
@@ -186,7 +187,7 @@ class EditarLiniaView(View):
 
 
 # /linies/nova/<numero_albara>
-class NovaLiniaView(View):
+class NovaLiniaView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
         return render(request, "linia/nova_linia.html", {'albara': albara})
@@ -205,7 +206,7 @@ class NovaLiniaView(View):
 
 
 # /consulta/albara
-class ConsultaFormulariAlbaraView(View):
+class ConsultaFormulariAlbaraView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, "consulta/formulari_albara.html")
 
@@ -215,7 +216,7 @@ class ConsultaFormulariAlbaraView(View):
 
 
 # /consulta/albara/<numero_albara>/
-class ConsultaAlbaraView(View):
+class ConsultaAlbaraView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:
             albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])

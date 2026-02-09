@@ -8,15 +8,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
+{% include 'registration/logout.html' %}
 <div class="container mt-4">
-
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Detall de la Linia</h1>
         <a href="{% url 'detall_albara' numero_albara=linia.albara.numero_albara %}" class="btn btn-outline-secondary">
             ← Tornar al Albara
         </a>
     </div>
-
     <div class="card mb-4">
         <div class="card-header bg-dark text-white">
             <h2 class="mb-0">Linia #{{ linia.id }}</h2>
