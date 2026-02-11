@@ -10,6 +10,21 @@
 <body>
 {% include 'registration/logout.html' %}
 <div class="container mt-4">
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'error' %}
+    <div class="alert alert-danger alert-dismissible fade show mb-5">
+        <b>ERROR: </b> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% else %}
+    <div class="alert alert-info alert-dismissible fade show mb-5">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Detall del Albara</h1>
         <a href="{% url 'llistar_albarans' %}" class="btn btn-outline-secondary">
@@ -55,10 +70,12 @@
         </div>
     </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
-        <a href="{% url 'editar_albara' albara.numero_albara %}" class="btn btn-secondary me-2 py-0 d-inline-flex gap-2 align-items-center">
+        <a href="{% url 'editar_albara' albara.numero_albara %}"
+           class="btn btn-secondary me-2 py-0 d-inline-flex gap-2 align-items-center">
             <i class="bi fs-4 bi-pencil-square"></i> Editar albara
         </a>
-        <a href="{% url 'nova_linia' albara.numero_albara %}" class="btn btn-primary py-0 d-inline-flex gap-2 align-items-center">
+        <a href="{% url 'nova_linia' albara.numero_albara %}"
+           class="btn btn-primary py-0 d-inline-flex gap-2 align-items-center">
             <i class="bi fs-3 bi-node-plus"></i> Nova linia
         </a>
     </div>

@@ -15,6 +15,21 @@
             <i class="bi bi-arrow-left"></i> Tornar al detall
         </a>
     </div>
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'error' %}
+    <div class="alert alert-danger alert-dismissible fade show mb-5">
+        <b>ERROR: </b> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% else %}
+    <div class="alert alert-info alert-dismissible fade show mb-5">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
     <div class="card">
         <div class="card-header bg-dark text-white d-flex align-items-center">
             <h5 class="mb-0 pe-4">Albara  {{ albara.numero_albara }}</h5>

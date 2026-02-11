@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -103,6 +104,9 @@ class DetallAlbaraView(LoginRequiredMixin, View):
 class EditarAlbaraView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
+        if albara.estat == Albara.CANCELAT:
+            messages.error(request, "Un albara cancel·lat no es pot editar.")
+            return redirect('detall_albara', numero_albara=albara.numero_albara)
         clients = Client.objects.filter(
             Q(actiu=True) | Q(codi_client=albara.client.codi_client)
         )
@@ -111,6 +115,31 @@ class EditarAlbaraView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
+        if albara.estat == Albara.CANCELAT:
+            messages.error(request, "Un albara cancel·lat no es pot editar.")
+            return redirect('detall_albara', numero_albara=albara.numero_albara)
+
+        estat = request.POST.get('estat')
+        orden_estats = [
+            Albara.PENDENT,
+            Albara.EN_PREPARACIO,
+            Albara.ENVIAT,
+            Albara.ENTREGAT,
+        ]
+
+        can_edit = True
+        if estat != Albara.CANCELAT and estat != albara.estat:
+            try:
+                index = orden_estats.index(albara.estat)
+                next_estat = orden_estats[index + 1]
+                can_edit = (estat == next_estat)
+            except (ValueError, IndexError):
+                can_edit = False
+
+        if not can_edit:
+            messages.error(request,"Nomes es pot passar al seguent estat o cancel·lar l'albara.")
+            return redirect('editar_albara', numero_albara=albara.numero_albara)
+
         client = Client.objects.get(codi_client=request.POST.get('client'))
         albara.client = client
         albara.data_entrega_prevista = request.POST.get('data_entrega_prevista')
