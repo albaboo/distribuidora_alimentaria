@@ -95,12 +95,6 @@ Antes de comenzar, asegúrate de tener instalados:
 
 ---
 
-## 🧪 Pruebas
-
-Si el proyecto tiene pruebas (tests automatizados), agrégalas aquí. Si no, puedes usar Django Admin para probar manualmente las funcionalidades.
-
----
-
 ## 🧩 Estructura del proyecto
 
 Dentro del repositorio verás carpetas como:
