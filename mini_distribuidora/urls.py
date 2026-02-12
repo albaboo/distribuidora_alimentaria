@@ -41,7 +41,11 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path('cataleg/', views.CatalegView.as_view(), name='cataleg'),
     path('cataleg/producte/<str:codi>/', views.DetallProducteView.as_view(), name='detall_producte'),
-    path('cataleg/categoria/<int:categoria>/', views.CatalegCategoriaView.as_view(), name='cataleg_categoria')
+    path('cataleg/categoria/<int:categoria>/', views.CatalegCategoriaView.as_view(), name='cataleg_categoria'),
+    path('preparacio/', views.PreparacioView.as_view(), name='preparacio'),
+    path('preparacio/marcar/<int:id>/', views.MarcarPreparatView.as_view(), name='marcar_preparat'),
+    path('stock/', views.StockView.as_view(), name='stock'),
+    path('stock/reposicio/', views.ReposicioStockView.as_view(), name='reposicio_stock'),
 ]
 
 handler404 = 'mp_app.views.page_not_found'

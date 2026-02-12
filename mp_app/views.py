@@ -1,15 +1,12 @@
-from decimal import Decimal
-
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView
 
-from mp_app.models import Client, Producte, Categoria, Magatzem
 from mp_app.models import Albara
+from mp_app.models import Client, Producte, Categoria, Magatzem
 from mp_app.models import LiniaAlbara
 
 
@@ -166,7 +163,6 @@ class NouAlbaraView(LoginRequiredMixin, View):
         clients = Client.objects.filter(actiu=True)
         if clients.count() == 0:
             return render(request, 'home.html')
-        estats = Albara.ESTAT_CHOICES
         return render(request, "albara/nou_albara.html", {'clients': clients})
 
     def post(self, request, *args, **kwargs):
@@ -321,38 +317,38 @@ class HomeView(View):
         return render(request, 'home.html')
 
 
-class PreparacioView(EmpleatRequiredMixin, ListView):
+class PreparacioView(ListView):
     model = Albara
-    template_name = "preparacio/list_preparacio.html"
-    context_object_name = "albarans"
+    template_name = 'preparacio/list_preparacio.html'
+    context_object_name = 'albarans'
 
     def get_queryset(self):
-        empleat = self.request.user.empleat
-        return Albara.objects.filter(
-            magatzem=empleat.magatzem,
-            estat__in=[Albara.PENDENT, Albara.EN_PREPARACIO]
-        )
+        queryset = Albara.objects.filter(estat=Albara.EN_PREPARACIO).prefetch_related(
+            'linies__producte__stock_magatzems')
+        for albara in queryset:
+            for linia in albara.linies.all():
+                linia.stock = linia.producte.stock_magatzems.filter(magatzem=albara.magatzem).first()
+        return queryset
 
 
 class MarcarPreparatView(EmpleatRequiredMixin, View):
 
-    @transaction.atomic
     def post(self, request, *args, **kwargs):
         empleat = request.user.empleat
         albara = Albara.objects.get(id=self.kwargs['id'])
 
-        if albara.magatzem != empleat.magatzem:
+        if albara.magatzem != empleat.magatzem_assignat:
             raise PermissionDenied("Aquest albarà no pertany al teu magatzem.")
 
         for linia in albara.linies.all():
-            stock = linia.producte.stock_magatzems.get(magatzem=empleat.magatzem)
+            stock = linia.producte.stock_magatzems.filter(magatzem=empleat.magatzem_assignat).first()
 
-            if stock.quantitat < linia.quantitat:
-                messages.error(request, f"No hi ha prou stock per {linia.producte.nom}")
+            if not stock or stock.quantitat < linia.quantitat:
+                messages.error(request, f"No hi ha suficient stock per {linia.producte.nom}.")
                 return redirect('preparacio')
 
         for linia in albara.linies.all():
-            stock = linia.producte.stock_magatzems.get(magatzem=empleat.magatzem)
+            stock = linia.producte.stock_magatzems.filter(magatzem=empleat.magatzem_assignat).first()
             stock.quantitat -= linia.quantitat
             stock.save()
 
@@ -363,18 +359,23 @@ class MarcarPreparatView(EmpleatRequiredMixin, View):
         return redirect("preparacio")
 
 
-class StockView(EmpleatRequiredMixin, View):
-
-    def get(self, request):
-        magatzem_id = request.GET.get("magatzem")
-        categoria_id = request.GET.get("categoria")
-        productes = Producte.objects.all()
-        if categoria_id:
-            productes = productes.filter(categoria__id=categoria_id)
+class StockView(View):
+    def get(self, request, *args, **kwargs):
+        magatzems = Magatzem.objects.all()
+        productes = Producte.objects.prefetch_related('stock_magatzems').all()
+        productes_stock = []
+        for producte in productes:
+            stock_per_magatzem = {}
+            for m in magatzems:
+                sm = producte.stock_magatzems.filter(magatzem_id=m.id)
+                stock_per_magatzem[m.id] = sm.first() if sm.exists() else None
+            productes_stock.append({
+                'producte': producte,
+                'stocks': stock_per_magatzem
+            })
         context = {
-            "productes": productes,
-            "magatzems": Magatzem.objects.all(),
-            "categories": Categoria.objects.all(),
+            'magatzems': magatzems,
+            'productes_stock': productes_stock
         }
         return render(request, "stock/stock.html", context)
 

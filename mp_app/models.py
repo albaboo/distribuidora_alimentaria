@@ -74,7 +74,7 @@ class Producte(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             super().save(*args, **kwargs)
-            self.codi_client = f"BEB{self.id:03d}"
+            self.codi = f"BEB{self.id:03d}"
             kwargs['force_insert'] = False
             super().save(*args, **kwargs)
         else:
@@ -108,7 +108,7 @@ class Empleat(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             super().save(*args, **kwargs)
-            self.codi_client = f"EMP{self.id:03d}"
+            self.codi_empleat = f"EMP{self.id:03d}"
             kwargs['force_insert'] = False
             super().save(*args, **kwargs)
         else:

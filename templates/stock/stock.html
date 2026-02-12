@@ -3,76 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock de Productes</title>
+    <title>Gestió de Stock</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
 {% include 'registration/logout.html' %}
 <div class="container mt-4">
-    <h1 class="mb-4">Gestió d'Stock</h1>
-
-    <form method="get" class="row g-3 mb-4">
-        <div class="col-md-4">
-            <label class="form-label">Magatzem</label>
-            <select name="magatzem" class="form-select">
-                <option value="">Tots</option>
-                {% for m in magatzems %}
-                    <option value="{{ m.id }}" {% if request.GET.magatzem == m.id|stringformat:"s" %}selected{% endif %}>{{ m.nom }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Categoria</label>
-            <select name="categoria" class="form-select">
-                <option value="">Totes</option>
-                {% for c in categories %}
-                    <option value="{{ c.id }}" {% if request.GET.categoria == c.id|stringformat:"s" %}selected{% endif %}>{{ c.nom }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-md-4 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary">Filtrar</button>
-            <a href="{% url 'reposicio_stock' %}" class="btn btn-success ms-2">
-                <i class="bi bi-plus-circle"></i> Afegir Stock
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestió de Stock</h1>
+        <div class="d-flex gap-3">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-house"></i> Tornar a l'inici
             </a>
         </div>
-    </form>
-
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
+    </div>
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Producte</th>
                 {% for m in magatzems %}
                     <th>{{ m.nom }}</th>
                 {% endfor %}
             </tr>
-            </thead>
-            <tbody>
-            {% for producte in productes %}
-                <tr>
-                    <td>{{ producte.nom }}</td>
-                    {% for m in magatzems %}
-                        {% with stock=producte.stock_magatzems.get(magatzem=m) %}
-                            <td {% if stock.quantitat < 10 %}class="text-danger"{% endif %}>
-                                {{ stock.quantitat }} ({{ stock.ubicacio }})
-                            </td>
-                        {% endwith %}
-                    {% endfor %}
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="{{ magatzems|length|add:'1' }}" class="text-center text-muted">
-                        No hi ha productes.
+        </thead>
+        <tbody>
+            {% for item in productes_stock %}
+            <tr>
+                <td>{{ item.producte.nom }}</td>
+                {% for m in magatzems %}
+                    {% with sm=item.stocks.m.id %}
+                    <td
+                        {% if sm and sm.quantitat < 10 %}class="text-danger"{% endif %}
+                    >
+                        {% if sm %}
+                            {{ sm.quantitat }} ({{ sm.ubicacio }})
+                        {% else %}
+                            0
+                        {% endif %}
                     </td>
-                </tr>
+                    {% endwith %}
+                {% endfor %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="{{ magatzems|length|add:'1' }}" class="text-center">
+                    No hi ha productes disponibles.
+                </td>
+            </tr>
             {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
