@@ -126,6 +126,6 @@ Proyecto educativo / práctico para gestión básica de distribuidoras.
 ---
 
 
-More info [here](https://deepwiki.com/albaboo/mini_distribuidora)
+More info [here](https://deepwiki.com/albaboo/distribuidora_alimentaria)
 
 
