@@ -118,4 +118,14 @@ Este proyecto está bajo la licencia **MIT** (si aplica; ajusta si usas otra). S
 
 ---
 
+## ✨ Autor
+
+Desarrollado por **albaboo**  
+Proyecto educativo / práctico para gestión básica de distribuidoras.
+
+---
+
+
+More info [here](https://deepwiki.com/albaboo/mini_distribuidora)
+
 
