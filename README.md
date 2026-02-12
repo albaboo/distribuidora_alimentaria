@@ -109,23 +109,6 @@ db.sqlite3
 
 Estas contienen el código de la aplicación principal, plantillas HTML y la base de datos SQLite por defecto.
 
----
-
-## 🤝 Contribuir
-
-Si deseas colaborar con este proyecto:
-
-1. Haz un fork del repositorio.
-2. Crea una rama nueva (`git checkout -b feature/mi‑mejora`).
-3. Realiza tus cambios y haz commit (`git commit -m "Descripción de la mejora"`).
-4. Haz push a tu rama (`git push origin feature/mi‑mejora`).
-5. Abre un Pull Request describiendo tus cambios.
-
----
-
-## 🛟 Soporte
-
-Si encuentras errores o tienes dudas, abre un *issue* en este repositorio y trataré de ayudarte.
 
 ---
 
