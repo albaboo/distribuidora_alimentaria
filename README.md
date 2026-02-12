@@ -1,6 +1,6 @@
 # Distribuidora Alimentaria
 
-📦 Sistema de gestión para una distribuidora de productos alimentarios desarrollado con **Django** siguiendo el patrón arquitectónico **MVT (Model‑View‑Template)**. Permite gestionar productos, categorías, clientes, almacenes, stock, albaranes, preparación de pedidos, estadísticas de ventas e integración con autenticación de Django. ([github.com](https://github.com/albaboo/distribuidora_alimentaria))
+📦 Sistema de gestión para una distribuidora de productos alimentarios desarrollado con **Django** siguiendo el patrón arquitectónico **MVT (Model‑View‑Template)**. Permite gestionar productos, categorías, clientes, almacenes, stock, albaranes, preparación de pedidos, estadísticas de ventas e integración con autenticación de Django.
 
 ---
 
@@ -13,7 +13,7 @@ Esta aplicación web está diseñada para simplificar y automatizar la gestión 
 - Control de **almacenes** y **stock**.
 - Creación y seguimiento de **albaranes** y **pedidos**.
 - **Estadísticas de ventas**.
-- Autenticación de usuarios con **Django Auth**. ([github.com](https://github.com/albaboo/distribuidora_alimentaria))
+- Autenticación de usuarios con **Django Auth**.
 
 Este proyecto es ideal como base para una solución comercial o como ejercicio académico para aprender a construir aplicaciones completas con Django.
 
@@ -113,7 +113,7 @@ manage.py
 db.sqlite3
 ```
 
-Estas contienen el código de la aplicación principal, plantillas HTML y la base de datos SQLite por defecto. ([github.com](https://github.com/albaboo/distribuidora_alimentaria))
+Estas contienen el código de la aplicación principal, plantillas HTML y la base de datos SQLite por defecto.
 
 ---
 
@@ -141,11 +141,4 @@ Este proyecto está bajo la licencia **MIT** (si aplica; ajusta si usas otra). S
 
 ---
 
-## 👨‍💻 Autores
-
-- **albaboo** — *Desarrollador principal*
-
----
-
-🚀 ¡Gracias por utilizar y mejorar este proyecto!
 
