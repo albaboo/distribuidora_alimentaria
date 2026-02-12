@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -48,9 +50,9 @@ class Producte(models.Model):
         (LITRE, 'Litre'),
     ]
 
-    IVA_4 = 0.04
-    IVA_10 = 0.10
-    IVA_21 = 0.21
+    IVA_4 = Decimal('0.04')
+    IVA_10 = Decimal('0.10')
+    IVA_21 = Decimal('0.21')
 
     IVA_CHOICES = [
         (IVA_4, '4%'),
@@ -67,7 +69,7 @@ class Producte(models.Model):
     iva = models.DecimalField(choices=IVA_CHOICES, default=IVA_21, max_digits=10, decimal_places=2)
     es_periple = models.BooleanField()
     imatge_url = models.URLField(null=True, blank=True)
-    actiu = models.BooleanField()
+    actiu = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -111,6 +113,7 @@ class Empleat(models.Model):
             super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
+
 
 class Albara(models.Model):
     PENDENT = 'PENDENT'
@@ -175,7 +178,7 @@ class LiniaAlbara(models.Model):
 
     def save(self, *args, **kwargs):
         self.preu_unitari = self.producte.preu_unitari
-        self.subtotal = self.quantitat * self.preu_unitari * (1-self.descompte_percentatge/100)
+        self.subtotal = Decimal(self.quantitat) * self.preu_unitari * (Decimal('1') - Decimal(self.descompte_percentatge) / Decimal('100'))
         super().save(*args, **kwargs)
         self.albara.calcular_total()
 

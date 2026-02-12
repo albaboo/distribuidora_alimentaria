@@ -98,7 +98,7 @@
                     <tbody>
                     {% for linia in linies %}
                     <tr style='cursor: pointer;' onclick="window.location.href='{% url 'detall_linia' linia.id %}';">
-                        <td>{{ linia.nom_producte }}</td>
+                        <td>{{ linia.producte.nom }}</td>
                         <td>{{ linia.quantitat }}</td>
                         <td class="d-none d-lg-table-cell">{{ linia.preu_unitari }}</td>
                         <td>{{ linia.subtotal }}</td>

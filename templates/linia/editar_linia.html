@@ -37,11 +37,17 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="nom_producte" class="form-label">Nom Producte *</label>
-                        <input type="text" class="form-control" id="nom_producte" name="nom_producte"
-                               value="{{ linia.nom_producte }}" required>
+                        <label for="producte" class="form-label">Producte *</label>
+                        <select class="form-select" id="producte" name="producte" required>
+                            <option value="" disabled>Selecciona un producte</option>
+                            {% for p in productes_actius %}
+                            <option value="{{ p.id }}" data-preu="{{ p.preu_unitari }}">
+                                {{ p.nom }}
+                            </option>
+                            {% endfor %}
+                        </select>
                         <div class="invalid-feedback">
-                            Introdueix el nom del producte.
+                            Selecciona un producte.
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -54,10 +60,10 @@
                     </div>
                     <div class="col-md-3">
                         <label for="preu_unitari" class="form-label">Preu Unitari *</label>
-                        <input type="text" class="form-control" id="preu_unitari" name="preu_unitari"
-                               value="{{ linia.preu_unitari }}" required>
-                        <div class="invalid-feedback">
-                            Introdueix un preu valid.
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light" id="preu_unitari" name="preu_unitari"
+                                   placeholder="0.00" disabled>
+                            <span class="input-group-text rounded-end">€</span>
                         </div>
                     </div>
                 </div>
@@ -93,6 +99,15 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const selectProducte = document.getElementById('producte');
+    const inputPreu = document.getElementById('preu_unitari');
+
+    selectProducte.addEventListener('change', function() {
+        const selectedOption = selectProducte.options[selectProducte.selectedIndex];
+        inputPreu.value = selectedOption.dataset.preu || '';
+    });
+</script>
 <script>
     (function () {
         'use strict'

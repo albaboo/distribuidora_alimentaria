@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cataleg de Productes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+{% include 'registration/logout.html' %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Cataleg de Productes</h1>
+        <div class="d-flex gap-3">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-house"></i>
+                Tornar a l'inici
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        {% for producte in productes %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm" style="cursor:pointer;"
+                 onclick="window.location.href='{% url 'detall_producte' producte.codi %}';">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ producte.nom }} - {{ producte.preu_unitari }}€
+                    </h5>
+                    <p class="card-text text-muted">
+                        {{ producte.descripcio }}
+                    </p>
+                    <p class="mb-1">
+                        <strong>IVA:</strong> {{ producte.get_iva_display }} |
+                        <strong>Unitat:</strong> {{ producte.get_unitat_mesura_display }}
+                    </p>
+                    <div class="mt-2">
+                        {% if producte.stock_magatzems.count > 0 %}
+                        <span class="badge bg-success">
+                            <i class="bi bi-box-seam"></i>
+                            Stock disponible
+                        </span>
+                        {% else %}
+                        <span class="badge bg-danger">
+                            <i class="bi bi-x-circle"></i>
+                            Sense stock
+                        </span>
+                        {% endif %}
+                        {% if producte.categoria.requereix_refrigeracio %}
+                        <span class="badge bg-info text-dark">
+                            <i class="bi bi-snow"></i>
+                            Necessita refrigeració
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center">
+                <i class="bi bi-exclamation-triangle"></i>
+                No hi ha productes disponibles.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

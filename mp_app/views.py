@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView
 
-from mp_app.models import Client
+from mp_app.models import Client, Producte
 from mp_app.models import Albara
 from mp_app.models import LiniaAlbara
 
@@ -201,13 +201,13 @@ class DetallLiniaView(LoginRequiredMixin, View):
 class EditarLiniaView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         linia = LiniaAlbara.objects.get(id=self.kwargs['id'])
-        return render(request, "linia/editar_linia.html", {'linia': linia})
+        productes_actius = Producte.objects.filter(actiu=True)
+        return render(request, "linia/editar_linia.html", {'linia': linia, 'productes_actius': productes_actius})
 
     def post(self, request, *args, **kwargs):
         linia = LiniaAlbara.objects.get(id=self.kwargs['id'])
-        linia.nom_producte = request.POST.get('nom_producte')
+        linia.producte = Producte.objects.get(id=request.POST.get('producte'))
         linia.quantitat = int(request.POST.get('quantitat'))
-        linia.preu_unitari = Decimal(request.POST.get('preu_unitari'))
         linia.notes = request.POST.get('notes')
 
         linia.save()
@@ -219,15 +219,17 @@ class EditarLiniaView(LoginRequiredMixin, View):
 class NovaLiniaView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
-        return render(request, "linia/nova_linia.html", {'albara': albara})
+        productes_actius = Producte.objects.filter(actiu=True)
+        return render(request, "linia/nova_linia.html", {'albara': albara, 'productes_actius': productes_actius})
 
     def post(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
+        producte = Producte.objects.get(id=request.POST.get('producte'))
         linia = LiniaAlbara.objects.create(
             albara=albara,
-            nom_producte=request.POST.get('nom_producte'),
+            producte=producte,
             quantitat=int(request.POST.get('quantitat')),
-            preu_unitari=Decimal(request.POST.get('preu_unitari')),
+            preu_unitari=producte.preu_unitari,
             notes=request.POST.get('notes')
         )
 
@@ -258,6 +260,22 @@ class ConsultaAlbaraView(LoginRequiredMixin, View):
         except:
             return render(request, "error/albara-400.html", status=404)
 
+# /cataleg/
+class CatalegView(ListView):
+    model = Producte
+    template_name = 'producte/cataleg_producte.html'
+    context_object_name = 'productes'
+
+    def get_queryset(self):
+        return Producte.objects.all()
+
+
+# /producte/<codi>/
+class DetallProducteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        producte = Producte.objects.get(codi=self.kwargs['codi'])
+        stocks = producte.stock_magatzems.all()
+        return render(request, "producte/detall_producte.html", {'producte': producte, 'stocks': stocks})
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):

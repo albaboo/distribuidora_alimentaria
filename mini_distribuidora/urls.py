@@ -39,7 +39,8 @@ urlpatterns = [
     path('consulta/albara/', views.ConsultaFormulariAlbaraView.as_view(), name='cercar_albara'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path("accounts/", include("django.contrib.auth.urls")),
-
+    path('cataleg/', views.CatalegView.as_view(), name='cataleg'),
+    path('producte/<str:codi>/', views.DetallProducteView.as_view(), name='detall_producte'),
 ]
 
 handler404 = 'mp_app.views.page_not_found'
