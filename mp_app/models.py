@@ -178,7 +178,8 @@ class LiniaAlbara(models.Model):
 
     def save(self, *args, **kwargs):
         self.preu_unitari = self.producte.preu_unitari
-        self.subtotal = Decimal(self.quantitat) * self.preu_unitari * (Decimal('1') - Decimal(self.descompte_percentatge) / Decimal('100'))
+        self.subtotal = Decimal(self.quantitat) * self.preu_unitari * (
+                    Decimal('1') - Decimal(self.descompte_percentatge) / Decimal('100'))
         super().save(*args, **kwargs)
         self.albara.calcular_total()
 

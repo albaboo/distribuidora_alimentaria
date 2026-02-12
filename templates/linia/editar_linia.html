@@ -41,7 +41,8 @@
                         <select class="form-select" id="producte" name="producte" required>
                             <option value="" disabled>Selecciona un producte</option>
                             {% for p in productes_actius %}
-                            <option value="{{ p.id }}" data-preu="{{ p.preu_unitari }}">
+                            <option value="{{ p.id }}" data-preu="{{ p.preu_unitari }}"
+                            {% if p.id == linia.producte.id %} selected {% endif %}>
                                 {{ p.nom }}
                             </option>
                             {% endfor %}

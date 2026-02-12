@@ -53,7 +53,7 @@
                             <option value="" selected disabled>Selecciona un client</option>
                             {% for client in clients %}
                             <option value="{{ client.codi_client }}"
-                                    {% if clients|length == 1 or albara.client.codi_client == client.codi_client %} selected {{% endif %}>
+                                    {% if clients|length == 1 or albara.client.codi_client == client.codi_client %} selected {% endif %}>
                                 {{ client.nom_comercial }}
                             </option>
                             {% endfor %}

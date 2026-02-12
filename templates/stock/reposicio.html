@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reposició de Stock</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+{% include 'registration/logout.html' %}
+<div class="container mt-4">
+    <h1 class="mb-4">Reposició de Stock</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="row g-3">
+        {% csrf_token %}
+        <div class="col-md-4">
+            <label class="form-label">Producte</label>
+            <select name="producte" class="form-select" required>
+                <option value="" selected disabled>Selecciona un producte</option>
+                {% for p in productes %}
+                    <option value="{{ p.id }}">{{ p.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Magatzem</label>
+            <select name="magatzem" class="form-select" required>
+                <option value="" selected disabled>Selecciona un magatzem</option>
+                {% for m in magatzems %}
+                    <option value="{{ m.id }}">{{ m.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Quantitat</label>
+            <input type="number" name="quantitat" class="form-control" min="1" required>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-check-circle"></i> Afegir Stock
+            </button>
+            <a href="{% url 'stock' %}" class="btn btn-secondary ms-2">
+                Tornar a Stock
+            </a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

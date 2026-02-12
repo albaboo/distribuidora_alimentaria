@@ -19,6 +19,20 @@
             </a>
         </div>
     </div>
+    <div class="mb-4">
+        <div class="btn-group" role="group">
+            <a href="{% url 'cataleg' %}"
+               class="btn {% if not categoria_actual %}btn-info{% else %}btn-secondary{% endif %}">
+                TOTS
+            </a>
+            {% for categoria in categories %}
+            <a href="{% url 'cataleg_categoria' categoria.id %}"
+               class="btn {% if categoria_actual == categoria.id %}btn-info{% else %}btn-secondary{% endif %}">
+                {{ categoria.nom }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
     <div class="row">
         {% for producte in productes %}
         <div class="col-md-6 col-lg-4 mb-4">

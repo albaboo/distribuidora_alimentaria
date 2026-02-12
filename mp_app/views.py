@@ -2,11 +2,13 @@ from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView
 
-from mp_app.models import Client, Producte
+from mp_app.models import Client, Producte, Categoria, Magatzem
 from mp_app.models import Albara
 from mp_app.models import LiniaAlbara
 
@@ -15,6 +17,13 @@ from mp_app.models import LiniaAlbara
 
 def page_not_found(request, exception):
     return render(request, "error/404.html", status=404)
+
+
+class EmpleatRequiredMixin(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not hasattr(request.user, 'empleat'):
+            raise PermissionDenied("Nomes empleats poden accedir aqui.")
+        return super().dispatch(request, *args, **kwargs)
 
 
 # /clients/
@@ -137,7 +146,7 @@ class EditarAlbaraView(LoginRequiredMixin, View):
                 can_edit = False
 
         if not can_edit:
-            messages.error(request,"Nomes es pot passar al seguent estat o cancel·lar l'albara.")
+            messages.error(request, "Nomes es pot passar al seguent estat o cancel·lar l'albara.")
             return redirect('editar_albara', numero_albara=albara.numero_albara)
 
         client = Client.objects.get(codi_client=request.POST.get('client'))
@@ -225,10 +234,15 @@ class NovaLiniaView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         albara = Albara.objects.get(numero_albara=self.kwargs['numero_albara'])
         producte = Producte.objects.get(id=request.POST.get('producte'))
+        stock = producte.stock_magatzems.get(magatzem=albara.magatzem)
+        quantitat = int(request.POST.get('quantitat'))
+        if stock.quantitat < quantitat:
+            messages.error(request, "No hi ha prou stock disponible.")
+            return redirect('nova_linia', numero_albara=albara.numero_albara)
         linia = LiniaAlbara.objects.create(
             albara=albara,
             producte=producte,
-            quantitat=int(request.POST.get('quantitat')),
+            quantitat=quantitat,
             preu_unitari=producte.preu_unitari,
             notes=request.POST.get('notes')
         )
@@ -260,6 +274,7 @@ class ConsultaAlbaraView(LoginRequiredMixin, View):
         except:
             return render(request, "error/albara-400.html", status=404)
 
+
 # /cataleg/
 class CatalegView(ListView):
     model = Producte
@@ -267,16 +282,117 @@ class CatalegView(ListView):
     context_object_name = 'productes'
 
     def get_queryset(self):
-        return Producte.objects.all()
+        return Producte.objects.filter(actiu=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Categoria.objects.all()
+        context['categoria_actual'] = None
+        return context
 
 
-# /producte/<codi>/
+# /cataleg/categoria/<categoria>/
+class CatalegCategoriaView(ListView):
+    model = Producte
+    template_name = 'producte/cataleg_producte.html'
+    context_object_name = 'productes'
+
+    def get_queryset(self):
+        categoria_id = self.kwargs['categoria']
+        return Producte.objects.filter(actiu=True, categoria__id=categoria_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Categoria.objects.all()
+        context['categoria_actual'] = int(self.kwargs['categoria'])
+        return context
+
+
+# /cataleg/producte/<codi>/
 class DetallProducteView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         producte = Producte.objects.get(codi=self.kwargs['codi'])
         stocks = producte.stock_magatzems.all()
         return render(request, "producte/detall_producte.html", {'producte': producte, 'stocks': stocks})
 
+
 class HomeView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'home.html')
+
+
+class PreparacioView(EmpleatRequiredMixin, ListView):
+    model = Albara
+    template_name = "preparacio/list_preparacio.html"
+    context_object_name = "albarans"
+
+    def get_queryset(self):
+        empleat = self.request.user.empleat
+        return Albara.objects.filter(
+            magatzem=empleat.magatzem,
+            estat__in=[Albara.PENDENT, Albara.EN_PREPARACIO]
+        )
+
+
+class MarcarPreparatView(EmpleatRequiredMixin, View):
+
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        empleat = request.user.empleat
+        albara = Albara.objects.get(id=self.kwargs['id'])
+
+        if albara.magatzem != empleat.magatzem:
+            raise PermissionDenied("Aquest albarà no pertany al teu magatzem.")
+
+        for linia in albara.linies.all():
+            stock = linia.producte.stock_magatzems.get(magatzem=empleat.magatzem)
+
+            if stock.quantitat < linia.quantitat:
+                messages.error(request, f"No hi ha prou stock per {linia.producte.nom}")
+                return redirect('preparacio')
+
+        for linia in albara.linies.all():
+            stock = linia.producte.stock_magatzems.get(magatzem=empleat.magatzem)
+            stock.quantitat -= linia.quantitat
+            stock.save()
+
+        albara.estat = Albara.ENVIAT
+        albara.save()
+
+        messages.success(request, "Albarà marcat com ENVIAT")
+        return redirect("preparacio")
+
+
+class StockView(EmpleatRequiredMixin, View):
+
+    def get(self, request):
+        magatzem_id = request.GET.get("magatzem")
+        categoria_id = request.GET.get("categoria")
+        productes = Producte.objects.all()
+        if categoria_id:
+            productes = productes.filter(categoria__id=categoria_id)
+        context = {
+            "productes": productes,
+            "magatzems": Magatzem.objects.all(),
+            "categories": Categoria.objects.all(),
+        }
+        return render(request, "stock/stock.html", context)
+
+
+class ReposicioStockView(EmpleatRequiredMixin, View):
+
+    def get(self, request):
+        return render(request, "stock/reposicio.html", {
+            "productes": Producte.objects.all(),
+            "magatzems": Magatzem.objects.all()
+        })
+
+    def post(self, request):
+        producte = Producte.objects.get(id=request.POST.get("producte"))
+        magatzem = Magatzem.objects.get(id=request.POST.get("magatzem"))
+        quantitat = int(request.POST.get("quantitat"))
+        stock = producte.stock_magatzems.get(magatzem=magatzem)
+        stock.quantitat += quantitat
+        stock.save()
+        messages.success(request, "Stock actualitzat correctament.")
+        return redirect("stock")
